@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO Example</title>
+    <!-- Include Socket.IO CDN without integrity attribute -->
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+</head>
+
+<body>
+    <h1>Socket.IO Client</h1>
+
+    <form action="">
+
+        <input type="text" placeholder="Enter your unic userName" id="textContent">
+    </form>
+    <button class="button">send message</button>
+    <div class="chatContainer"></div>
+    <script>
+        // const connect = document.querySelector("#connect")
+        const textContent = document.querySelector("#textContent")
+        const button = document.querySelector(".button")
+        const chatContainer = document.querySelector(".chatContainer")
+
+        const socket = io('http://localhost:3000');
+        // Example: Listen for events from the server
+        socket.on('connect', () => {
+            console.log('Connected to the server');
+        });
+        button.addEventListener("click", () => {
+
+            let data = textContent.value
+            // Example: Emit an event to the server
+            socket.emit('myEvent', { message: data });
+
+        })
+        socket.on('message', (data) => {
+            console.log("the data which are post by backend is : ", data.message.message);
+            // chatContainer.innerHTML = data.message.message
+            const p = document.createElement("p")
+            p.innerText = data.message.message
+            chatContainer.appendChild(p)
+        });
+        // Initialize Socket.IO
+        // Replace with your server URL
+
+    </script>
+</body>
+
+</html>
